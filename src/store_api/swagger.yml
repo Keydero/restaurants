@@ -19,11 +19,11 @@ paths:
       operationId: "store.create"
       tags:
         - "Store"
-      summary: "Create the list of stores"
+      summary: "Create a store"
       responses:
         "200":
           description: "Successfully create the store"
-  /stores/{name}/items:
+  /stores/{name}/createItem:
     post:
       operationId: "store.create_item"
       parameters:
@@ -37,5 +37,21 @@ paths:
         - "Store"
       summary: "create an item associated to the store"
       responses:
-        "200":
+        "201":
           description: "Successfully created and linked the item to the store"
+  /stores/{name}/items:
+    get:
+      operationId: "store.get_items_in_store"
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: name of the store
+      tags:
+        - "Store"
+      summary: "Get items of a specific store"
+      responses:
+        "201":
+          description: "Successfully found items"
