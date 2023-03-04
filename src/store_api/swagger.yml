@@ -55,3 +55,19 @@ paths:
       responses:
         "201":
           description: "Successfully found items"
+  /stores/{name}:
+    get:
+      operationId: "store.get_store_by_name"
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: name of the store
+      tags:
+        - "Store"
+      summary: "Get a store by name"
+      responses:
+        "200":
+          description: "Successfully found the store"

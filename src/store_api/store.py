@@ -32,11 +32,20 @@ def create():
     stores.append(new_store)
     return new_store, 201
 
+
+def get_store_by_name(name):
+    for store in stores:
+        if store["name"] == name:
+            return {"items": store}
+    return {"error": "Store not Found"}, 404
+
+
 def get_items_in_store(name):
     for store in stores:
         if store["name"] == name:
             return {"items": store["items"]}
     return {"error": "Store not Found"}, 404
+
 
 def create_item(name):
     item = request.get_json()
