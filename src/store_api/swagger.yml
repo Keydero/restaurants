@@ -15,3 +15,11 @@ paths:
       responses:
         "200":
           description: "Successfully read stores list"
+    post:
+      operationId: "store.create"
+      tags:
+        - "Store"
+      summary: "Create the list of stores"
+      responses:
+        "200":
+          description: "Successfully create the store"

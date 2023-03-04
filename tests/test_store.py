@@ -7,6 +7,5 @@ __copyright__ = "Keyproco"
 __license__ = "MIT"
 
 
-
-
-
+def test_list():
+    assert True

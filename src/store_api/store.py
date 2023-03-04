@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from connexion import request
 
 stores = [
     {
@@ -25,3 +24,10 @@ stores = [
 
 def list():
     return {"stores": stores}
+
+
+def create():
+    store = request.get_json()
+    new_store = {"name": store["name"], "items": []}
+    stores.append(new_store)
+    return new_store, 201
