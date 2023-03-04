@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: "Store api"
+  description: "An API about managing stores"
+  version: "1.0.0"
+servers:
+  - url: "/api"
+paths:
+  /stores:
+    get:
+      operationId: "store.list"
+      tags:
+        - "Store"
+      summary: "Read the list of stores"
+      responses:
+        "200":
+          description: "Successfully read stores list"
