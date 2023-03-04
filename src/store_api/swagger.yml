@@ -23,3 +23,19 @@ paths:
       responses:
         "200":
           description: "Successfully create the store"
+  /stores/{name}/items:
+    post:
+      operationId: "store.create_item"
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: name of the store
+      tags:
+        - "Store"
+      summary: "create an item associated to the store"
+      responses:
+        "200":
+          description: "Successfully created and linked the item to the store"
