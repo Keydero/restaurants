@@ -1,5 +1,7 @@
 import pytest
 
+import connexion
+
 from store_api.store import list
 
 __author__ = "Keyproco"
