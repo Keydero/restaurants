@@ -1,3 +1,5 @@
+import os
+
 from connexion import request
 
 stores = [
@@ -23,7 +25,7 @@ stores = [
 
 
 def list():
-    return {"stores": stores}
+    return os.environ["FLASK_APP"]
 
 
 def create():
