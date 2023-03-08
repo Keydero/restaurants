@@ -1,14 +1,15 @@
-from flask_smorest import abort
 
+from flask_smorest import abort
+from connexion import request
 from flask.views import MethodView
+import uuid
 from db import stores, items
 
-
-# TODO validation
 class StoreView(MethodView):
     stores = {}
 
     def post():
+        # validation wip
         item = request.get_json()
         item_uid = uuid.uuid4()
         item = {**item, "id": item_uid}
@@ -27,3 +28,4 @@ class StoreView(MethodView):
             return stores["store_id"] in stores
         except KeyError:
             abort(404, message="Store not found")
+
