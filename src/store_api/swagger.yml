@@ -6,68 +6,63 @@ info:
 servers:
   - url: "/api"
 paths:
-  /stores:
-    get:
-      operationId: "store.list"
-      tags:
-        - "Store"
-      summary: "Read the list of stores"
-      responses:
-        "200":
-          description: "Successfully read stores list"
+  /stores/create:
     post:
-      operationId: "store.create"
+      operationId: api.StoreView.post
       tags:
         - "Store"
-      summary: "Create a store"
-      responses:
-        "200":
-          description: "Successfully create the store"
-  /stores/{name}/createItem:
-    post:
-      operationId: "store.create_item"
-      parameters:
-        - in: path
-          name: name
-          schema:
-            type: string
-          required: true
-          description: name of the store
-      tags:
-        - "Store"
-      summary: "create an item associated to the store"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Store'
       responses:
         "201":
-          description: "Successfully created and linked the item to the store"
-  /stores/{name}/items:
+          description: "Successfully created the store"
+  '/stores/{store_id}':
     get:
-      operationId: "store.get_items_in_store"
-      parameters:
-        - in: path
-          name: name
-          schema:
-            type: string
-          required: true
-          description: name of the store
+      operationId: api.StoreView.get
       tags:
         - "Store"
-      summary: "Get items of a specific store"
-      responses:
-        "201":
-          description: "Successfully found items"
-  /stores/{name}:
-    get:
-      operationId: "store.get_store_by_name"
-      parameters:
-        - in: path
-          name: name
-          schema:
-            type: string
-          required: true
-          description: name of the store
-      tags:
-        - "Store"
-      summary: "Get a store by name"
       responses:
         "200":
-          description: "Successfully found the store"
+          description: "Store found"
+      parameters:
+        - in: path
+          name: store_id
+          schema:
+            type: string
+          required: true
+          description: id of the store (uuid)
+    put:
+      operationId: api.StoreView.put
+      tags:
+        - "Store"
+      responses:
+        "200":
+          description: "Successfully updated the store"
+    delete:
+      operationId: api.StoreView.delete
+      tags:
+        - "Store"
+      responses:
+        "200":
+          description: "Successfully deleted the store"
+components:
+  schemas:
+    Store:
+      type: object
+      properties:
+        name:
+          type: string
+    Item:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+        store_id:
+          type: string
+          format: uuid
