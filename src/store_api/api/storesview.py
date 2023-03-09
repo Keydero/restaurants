@@ -10,11 +10,11 @@ class StoreView(MethodView):
 
     def post():
         # validation wip
-        item = request.get_json()
-        item_uid = uuid.uuid4()
-        item = {**item, "id": item_uid}
-        items[item_uid] = item
-        return item, 201
+        new_store = request.get_json()
+        store_uid = uuid.uuid4()
+        store = {**new_store, "id": store_uid}
+        stores[store_uid] = store
+        return store, 201
 
     def put(self, store_id, body: dict):
 

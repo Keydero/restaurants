@@ -49,6 +49,20 @@ paths:
       responses:
         "200":
           description: "Successfully deleted the store"
+  /items/create:
+    post:
+      operationId: api.ItemView.post
+      tags:
+        - "Item"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Item'
+      responses:
+        "201":
+          description: "Successfully created an item"
 components:
   schemas:
     Store:
