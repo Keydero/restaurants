@@ -1,4 +1,0 @@
-connexion==2.14.1
-setuptools~=65.5.1
-python-dotenv~=1.0.0
-flask-smorest~=0.40.0
