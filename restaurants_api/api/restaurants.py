@@ -18,4 +18,4 @@ class RestaurantView(MethodView):
     @blp.arguments(RestaurantSchema)
     @blp.response(201, RestaurantSchema(many=True))
     def post(self, restaurant):
-        for restaurant
+        return restaurant
