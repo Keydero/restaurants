@@ -1,1 +1,2 @@
 from .restaurants import RestaurantView
+from restaurants_api.schemas import RestaurantSchema

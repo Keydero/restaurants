@@ -1,0 +1,1 @@
+from restaurants_api.schemas import RestaurantSchema
