@@ -1,1 +1,2 @@
 from restaurants_api.schemas import RestaurantSchema
+from restaurants_api.app import configure_tracer
