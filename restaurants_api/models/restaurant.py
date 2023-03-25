@@ -8,4 +8,5 @@ class RestaurantModel(db.model):
     name = db.Column(db.String(80), nullable=False)
     sir = db.Column(db.String(3), nullable=False)
     speciality = db.Column(db.String(30), nullable=False)
-    owner_id = db.Column(db.Integer, nullable=False)
+    owner_id = db.Column(db.Integer, db.foreignKey("owners.id"), nullable=False)
+
