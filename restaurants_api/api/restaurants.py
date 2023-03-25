@@ -1,5 +1,5 @@
-#import uuid
-#from flask import request
+# import uuid
+# from flask import request
 
 
 from opentelemetry import trace
@@ -24,12 +24,14 @@ def configure_tracer():
 tracer = configure_tracer()
 blp = Blueprint("restaurants", __name__, description="Restaurants crud")
 
+
 @blp.route("/restaurants/<string:restaurant_id>")
 class RestaurantView(MethodView):
 
-    def get(self,restaurant_id):
-        with tracer.start_as_current_span("server_request"):
-            return restaurant_id
+    def get(self, restaurant_id):
+        with tracer.start_as_current_span("server_request",   attributes={"endpoint": f'restaurants/{restaurant_id}'}):
+            with tracer.start_as_current_span("another_span", attributes={"endpoint": f'restaurants/{restaurant_id}'}):
+                return restaurant_id
 
     @blp.arguments(RestaurantSchema)
     @blp.response(201, RestaurantSchema(many=True))
