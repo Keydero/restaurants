@@ -6,16 +6,19 @@ from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, BatchSpanProcessor
 from schemas import RestaurantSchema
-
+from .resource_detector import LocalMachineResourceDetector
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
 
 def configure_tracer():
-    resource = Resource.create({
-        "service.name": "restaurants",
-        "service.version": "0.0.1"
-    })
+    local_resource = LocalMachineResourceDetector().detect()
+    resource = local_resource.merge(
+        Resource.create({
+            "service.name": "restaurants",
+            "service.version": "0.0.1"
+        })
+    )
     exporter = ConsoleSpanExporter()
     span_processor = BatchSpanProcessor(exporter)
     provider = TracerProvider(resource=resource)
