@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Keyproco <oussama.keddar@epitech.eu>"]
 readme = "README.md"
-packages = [{include = "restaurant_api"}]
+packages = [{include = "restaurants_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

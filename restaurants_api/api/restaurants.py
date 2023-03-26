@@ -1,6 +1,6 @@
 # import uuid
 # from flask import request
-
+from opentelemetry.semconv.trace import HttpFlavorValues, SpanAttributes
 from opentelemetry.sdk.resources import Resource
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
@@ -36,8 +36,15 @@ blp = Blueprint("restaurants", __name__, description="Restaurants crud")
 class RestaurantView(MethodView):
 
     def get(self, restaurant_id):
-        with tracer.start_as_current_span("server_request", attributes={"endpoint": f'restaurants/{restaurant_id}'}):
+        with tracer.start_as_current_span("server_request", attributes={"endpoint": f'restaurants/{restaurant_id}'},
+                                          kind=trace.SpanKind.CLIENT):
             with tracer.start_as_current_span("another_span", attributes={"endpoint": f'restaurants/{restaurant_id}'}):
+                span = trace.get_current_span()
+                span.set_attributes(
+                    {
+                        SpanAttributes.HTTP_METHOD: "GET"
+                    }
+                )
                 return restaurant_id
 
     @blp.arguments(RestaurantSchema)
