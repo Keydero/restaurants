@@ -1,34 +1,39 @@
 # import uuid
 # from flask import request
-from opentelemetry.semconv.trace import HttpFlavorValues, SpanAttributes
-from opentelemetry.sdk.resources import Resource
+# import uuid
+# from flask import request
 from opentelemetry import trace
+from opentelemetry.trace import SpanKind
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import ConsoleSpanExporter, BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.resources import Resource
 from schemas import RestaurantSchema
-from .resource_detector import LocalMachineResourceDetector
-from flask.views import MethodView
+from opentelemetry.semconv.trace import HttpFlavorValues, SpanAttributes
 from flask_smorest import Blueprint, abort
+from flask.views import MethodView
+
+from .resource_detector import LocalMachineResourceDetector
+
+local_resource = LocalMachineResourceDetector().detect()
+resource = local_resource.merge(
+    Resource.create({
+        "service.name": "restaurants",
+        "service.version": "0.0.1"
+    })
+)
+
+trace.set_tracer_provider(TracerProvider(resource=resource))
+
+otlp_exporter = OTLPSpanExporter(endpoint="opentelemetry-collector:4317", insecure=True)
 
 
-def configure_tracer():
-    local_resource = LocalMachineResourceDetector().detect()
-    resource = local_resource.merge(
-        Resource.create({
-            "service.name": "restaurants",
-            "service.version": "0.0.1"
-        })
-    )
-    exporter = ConsoleSpanExporter()
-    span_processor = BatchSpanProcessor(exporter)
-    provider = TracerProvider(resource=resource)
-    provider.add_span_processor(span_processor)
-    trace.set_tracer_provider(provider)
+trace.get_tracer_provider().add_span_processor(
+    BatchSpanProcessor(otlp_exporter)
+)
 
-    return trace.get_tracer("restaurants.py", "0.0.1")
+tracer = trace.get_tracer(__name__)
 
-
-tracer = configure_tracer()
 blp = Blueprint("restaurants", __name__, description="Restaurants crud")
 
 

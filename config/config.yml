@@ -1,0 +1,19 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+exporters:
+  logging:
+    loglevel: debug
+  jaeger:
+    endpoint: jaeger:14250
+    tls:
+      insecure: true
+  otlp:
+    endpoint: opentelemetry-collector:4317
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [jaeger]
